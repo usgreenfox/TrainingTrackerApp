@@ -31,17 +31,18 @@ struct HeatmapView: View {
     }
 
     private func color(for duration: Int) -> Color {
-        guard duration > 0 else { return Color.gray.opacity(0.15) }
+        guard duration > 0 else { return Color.white.opacity(0.08) }
 
         let normalized = maxDuration > 0 ? Double(duration) / Double(maxDuration) : 0
         let opacity = 0.25 + normalized * 0.65
-        return Color.green.opacity(opacity)
+        return Color("AccentColor").opacity(opacity)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("直近12週間のトレーニング量")
                 .font(.headline)
+                .foregroundColor(.white)
 
             HStack(alignment: .top, spacing: 4) {
                 ForEach(0..<weeksToShow, id: \.self) { week in
@@ -68,8 +69,12 @@ struct HeatmapView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(10)
+        .background(Color("AppSurface"))
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.white.opacity(0.06), lineWidth: 1)
+        )
     }
 
     private func dateFormatted(_ date: Date) -> String {
