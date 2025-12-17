@@ -3,7 +3,7 @@ import SwiftUI
 struct HeatmapView: View {
     var entries: [TrainingEntry]
 
-    private let weeksToShow = 6
+    private let weeksToShow = 12
     private let calendar = Calendar.current
 
     private var startOfWeek: Date {
@@ -40,7 +40,7 @@ struct HeatmapView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("直近6週間のトレーニング量")
+            Text("直近12週間のトレーニング量")
                 .font(.headline)
 
             HStack(alignment: .top, spacing: 4) {
