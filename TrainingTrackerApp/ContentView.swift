@@ -17,7 +17,7 @@ struct ContentView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        header
+//                        header
 
                         HeatmapView(entries: viewModel.entries)
                             .frame(height: 200)
@@ -45,7 +45,7 @@ struct ContentView: View {
                     .padding(.horizontal, 16)
                 }
             }
-            .navigationTitle("習慣タイム記録")
+//            .navigationTitle("習慣タイム記録")
         }
         .preferredColorScheme(.dark)
         .tint(Color("AccentColor"))

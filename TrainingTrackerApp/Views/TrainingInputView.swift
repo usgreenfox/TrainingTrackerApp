@@ -12,7 +12,7 @@ struct TrainingInputView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("種目")
+                Text("アクティビティ")
                     .font(.caption)
                     .foregroundColor(.secondary)
 
