@@ -3,15 +3,63 @@ import SwiftUI
 struct TrainingInputView: View {
     @ObservedObject var viewModel: TrainingViewModel
 
-    @State private var exercise = ""
-    @State private var duration = ""
+    @State private var selectedActivity = "読書"
+    @State private var durationMinutes: Double = 30
     @State private var note = ""
+
+    private let activities = ["読書", "エクササイズ", "勉強", "筋トレ"]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            inputField(title: "種目", text: $exercise, systemIcon: "figure.run")
+            VStack(alignment: .leading, spacing: 8) {
+                Text("種目")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
 
-            inputField(title: "時間（分）", text: $duration, systemIcon: "clock", keyboard: .numberPad)
+                HStack(spacing: 8) {
+                    ForEach(activities, id: \.self) { activity in
+                        Button {
+                            selectedActivity = activity
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: activityIcon(for: activity))
+                                    .font(.footnote)
+                                Text(activity)
+                                    .font(.footnote)
+                                    .fontWeight(.semibold)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 14)
+                            .frame(maxWidth: .infinity)
+                            .background(selectedActivity == activity ? Color("AccentColor").opacity(0.2) : Color.white.opacity(0.05))
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color("AccentColor").opacity(selectedActivity == activity ? 0.8 : 0.3), lineWidth: 1)
+                            )
+                            .foregroundColor(.white)
+                            .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("時間（分）")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("\(Int(durationMinutes)) 分")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Slider(value: $durationMinutes, in: 0...180, step: 5) {
+                    Text("時間（分）")
+                }
+                .tint(Color("AccentColor"))
+            }
 
             inputField(title: "メモ", text: $note, systemIcon: "pencil.line")
 
@@ -66,12 +114,24 @@ struct TrainingInputView: View {
     }
 
     private func registerEntry() {
-        if let durationInt = Int(duration) {
-            let entry = TrainingEntry(date: Date(), exercise: exercise, duration: durationInt, note: note)
-            viewModel.addEntry(entry)
-            exercise = ""
-            duration = ""
-            note = ""
+        let entry = TrainingEntry(date: Date(), activity: selectedActivity, duration: Int(durationMinutes), note: note)
+        viewModel.addEntry(entry)
+        durationMinutes = 30
+        note = ""
+    }
+
+    private func activityIcon(for activity: String) -> String {
+        switch activity {
+        case "読書":
+            return "book.fill"
+        case "エクササイズ":
+            return "figure.cooldown"
+        case "勉強":
+            return "brain.head.profile"
+        case "筋トレ":
+            return "dumbbell.fill"
+        default:
+            return "sparkles"
         }
     }
 }

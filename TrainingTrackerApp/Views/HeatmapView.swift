@@ -40,7 +40,7 @@ struct HeatmapView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("直近12週間のトレーニング量")
+            Text("直近12週間の習慣時間")
                 .font(.headline)
                 .foregroundColor(.white)
 

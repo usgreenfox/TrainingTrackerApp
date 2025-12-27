@@ -45,7 +45,7 @@ struct ContentView: View {
                     .padding(.horizontal, 16)
                 }
             }
-            .navigationTitle("トレーニング記録")
+            .navigationTitle("習慣タイム記録")
         }
         .preferredColorScheme(.dark)
         .tint(Color("AccentColor"))
@@ -68,7 +68,7 @@ struct ContentView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("今日の積み上げ")
                     .font(.headline)
-                Text("シンプルに、着実に記録を残しましょう")
+                Text("読書やエクササイズなどの時間をシンプルに記録しましょう")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
