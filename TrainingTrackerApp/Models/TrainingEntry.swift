@@ -24,6 +24,15 @@ struct TrainingEntry: Identifiable, Codable {
         self.note = note
     }
 
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(date, forKey: .date)
+        try container.encode(activity, forKey: .activity)
+        try container.encode(duration, forKey: .duration)
+        try container.encode(note, forKey: .note)
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
