@@ -51,32 +51,32 @@ struct HeatmapView: View {
             ZStack(alignment: .topLeading) {
                 heatmapGrid
 
-                HStack {
-                    Text("過去")
-                    Spacer()
-                    Text("今日")
-                }
-                .font(.caption)
-                .foregroundColor(.white.opacity(0.6))
-                .padding(.horizontal, 4)
-                .padding(.top, -2)
+//                HStack {
+//                    Text("過去")
+//                    Spacer()
+//                    Text("今日")
+//                }
+//                .font(.caption)
+//                .foregroundColor(.white.opacity(0.6))
+//                .padding(.horizontal, 4)
+//                .padding(.top, -2)
 
-                VStack {
-                    HStack {
-                        Spacer()
-                        Text("Sun")
-                            .font(.caption2)
-                            .foregroundColor(.white.opacity(0.6))
-                    }
-                    Spacer()
-                    HStack {
-                        Text("Sat")
-                            .font(.caption2)
-                            .foregroundColor(.white.opacity(0.6))
-                        Spacer()
-                    }
-                }
-                .padding(2)
+//                VStack {
+//                    HStack {
+//                        Spacer()
+//                        Text("Sun")
+//                            .font(.caption2)
+//                            .foregroundColor(.white.opacity(0.6))
+//                    }
+//                    Spacer()
+//                    HStack {
+//                        Text("Sat")
+//                            .font(.caption2)
+//                            .foregroundColor(.white.opacity(0.6))
+//                        Spacer()
+//                    }
+//                }
+//                .padding(2)
             }
 
             legend
