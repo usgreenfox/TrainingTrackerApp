@@ -5,6 +5,8 @@ struct HeatmapView: View {
 
     private let weeksToShow = 12
     private let calendar = Calendar.current
+    private let intensityLevels = 4
+    private let referenceDuration = 180
 
     private var startOfWeek: Date {
         calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) ?? Date()
@@ -20,10 +22,6 @@ struct HeatmapView: View {
         }
     }
 
-    private var maxDuration: Int {
-        entries.map { $0.duration }.max() ?? 0
-    }
-
     private func duration(for date: Date) -> Int {
         entries
             .filter { calendar.isDate($0.date, inSameDayAs: date) }
@@ -33,8 +31,14 @@ struct HeatmapView: View {
     private func color(for duration: Int) -> Color {
         guard duration > 0 else { return Color.white.opacity(0.08) }
 
-        let normalized = maxDuration > 0 ? Double(duration) / Double(maxDuration) : 0
-        let opacity = 0.25 + normalized * 0.65
+        let clampedDuration = min(duration, referenceDuration)
+        let normalized = Double(clampedDuration) / Double(referenceDuration)
+        let level = max(1, Int(ceil(normalized * Double(intensityLevels))))
+        let minOpacity: Double = 0.2
+        let maxOpacity: Double = 0.85
+        let step = (maxOpacity - minOpacity) / Double(max(intensityLevels - 1, 1))
+        let opacity = minOpacity + step * Double(level - 1)
+
         return Color("AccentColor").opacity(opacity)
     }
 
@@ -55,11 +59,6 @@ struct HeatmapView: View {
                             Rectangle()
                                 .fill(color(for: value))
                                 .frame(width: 24, height: 24)
-                                .overlay(
-                                    Text(value > 0 ? "\(min(value, 99))" : "")
-                                        .font(.caption2)
-                                        .foregroundColor(.white)
-                                )
                                 .cornerRadius(4)
                                 .accessibilityLabel(Text("\(dateFormatted(date)): \(value)分"))
                         }
