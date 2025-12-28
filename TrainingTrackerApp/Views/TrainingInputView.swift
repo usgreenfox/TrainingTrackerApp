@@ -16,30 +16,32 @@ struct TrainingInputView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
 
-                HStack(spacing: 8) {
-                    ForEach(activities, id: \.self) { activity in
-                        Button {
-                            selectedActivity = activity
-                        } label: {
-                            HStack(spacing: 6) {
-                                Image(systemName: activityIcon(for: activity))
-                                    .font(.footnote)
-                                Text(activity)
-                                    .font(.footnote)
-                                    .fontWeight(.semibold)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(activities, id: \.self) { activity in
+                            Button {
+                                selectedActivity = activity
+                            } label: {
+                                HStack(spacing: 6) {
+                                    Image(systemName: activityIcon(for: activity))
+                                        .font(.footnote)
+                                    Text(activity)
+                                        .font(.footnote)
+                                        .fontWeight(.semibold)
+                                        .lineLimit(1)
+                                }
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 14)
+                                .background(selectedActivity == activity ? Color("AccentColor").opacity(0.2) : Color.white.opacity(0.05))
+                                .overlay(
+                                    Capsule()
+                                        .stroke(Color("AccentColor").opacity(selectedActivity == activity ? 0.8 : 0.3), lineWidth: 1)
+                                )
+                                .foregroundColor(.white)
+                                .clipShape(Capsule())
                             }
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 14)
-                            .frame(maxWidth: .infinity)
-                            .background(selectedActivity == activity ? Color("AccentColor").opacity(0.2) : Color.white.opacity(0.05))
-                            .overlay(
-                                Capsule()
-                                    .stroke(Color("AccentColor").opacity(selectedActivity == activity ? 0.8 : 0.3), lineWidth: 1)
-                            )
-                            .foregroundColor(.white)
-                            .clipShape(Capsule())
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             }
