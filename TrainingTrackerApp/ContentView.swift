@@ -21,6 +21,7 @@ struct ContentView: View {
 
                         HeatmapView(entries: viewModel.entries)
                             .frame(height: 200)
+                            .padding(.bottom, 12)
 
                         TrainingInputView(viewModel: viewModel)
 
