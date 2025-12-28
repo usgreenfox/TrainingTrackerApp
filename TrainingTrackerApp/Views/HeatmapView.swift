@@ -43,29 +43,43 @@ struct HeatmapView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
             Text("直近12週間のアクティビティ")
                 .font(.headline)
                 .foregroundColor(.white)
 
-            HStack(alignment: .top, spacing: 4) {
-                ForEach(0..<weeksToShow, id: \.self) { week in
-                    VStack(spacing: 4) {
-                        ForEach(0..<7, id: \.self) { day in
-                            let index = week * 7 + day
-                            let date = days[index]
-                            let value = duration(for: date)
+            ZStack(alignment: .topLeading) {
+                heatmapGrid
 
-                            Rectangle()
-                                .fill(color(for: value))
-                                .frame(width: 24, height: 24)
-                                .cornerRadius(4)
-                                .accessibilityLabel(Text("\(dateFormatted(date)): \(value)分"))
-                        }
+                HStack {
+                    Text("過去")
+                    Spacer()
+                    Text("今日")
+                }
+                .font(.caption)
+                .foregroundColor(.white.opacity(0.6))
+                .padding(.horizontal, 4)
+                .padding(.top, -2)
+
+                VStack {
+                    HStack {
+                        Spacer()
+                        Text("Sun")
+                            .font(.caption2)
+                            .foregroundColor(.white.opacity(0.6))
+                    }
+                    Spacer()
+                    HStack {
+                        Text("Sat")
+                            .font(.caption2)
+                            .foregroundColor(.white.opacity(0.6))
+                        Spacer()
                     }
                 }
+                .padding(2)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+
+            legend
         }
         .padding()
         .background(Color("AppSurface"))
@@ -80,5 +94,50 @@ struct HeatmapView: View {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
+    }
+
+    private var heatmapGrid: some View {
+        HStack(alignment: .top, spacing: 4) {
+            ForEach(0..<weeksToShow, id: \.self) { week in
+                VStack(spacing: 4) {
+                    ForEach(0..<7, id: \.self) { day in
+                        let index = week * 7 + day
+                        let date = days[index]
+                        let value = duration(for: date)
+
+                        Rectangle()
+                            .fill(color(for: value))
+                            .frame(width: 24, height: 24)
+                            .cornerRadius(4)
+                            .accessibilityLabel(Text("\(dateFormatted(date)): \(value)分"))
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var legend: some View {
+        HStack(spacing: 8) {
+            Text("less")
+                .font(.caption2)
+                .foregroundColor(.white.opacity(0.6))
+
+            HStack(spacing: 4) {
+                ForEach(0..<intensityLevels, id: \.self) { level in
+                    let sampleDuration = Int(
+                        Double(referenceDuration) * Double(level) / Double(max(intensityLevels - 1, 1))
+                    )
+                    Rectangle()
+                        .fill(color(for: sampleDuration))
+                        .frame(width: 18, height: 10)
+                        .cornerRadius(2)
+                }
+            }
+
+            Text("more")
+                .font(.caption2)
+                .foregroundColor(.white.opacity(0.6))
+        }
     }
 }
